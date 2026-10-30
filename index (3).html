@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEP ON | 나의 움직임 변화</title>
+<style>
+:root{--ink:#34445b;--muted:#77869a;--blue:#dff1fa;--blue2:#b9deef;--lav:#eee8fb;--pink:#fbe9ed;--cream:#fff8e9;--mint:#e5f4ed;--white:#fff;--line:#e8edf2;--shadow:0 14px 40px rgba(91,119,148,.10)}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(135deg,#f2f9fc 0%,#f8f5ff 55%,#fff9f0 100%);font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;color:var(--ink);min-height:100vh}
+button{font:inherit;cursor:pointer} .wrap{max-width:850px;margin:auto;padding:28px 20px 70px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}.brand{font-weight:900;letter-spacing:2px;color:#5d8ba5;font-size:19px}.tag{font-size:12px;color:#8293a6;background:#ffffffb8;border:1px solid #e9eff4;padding:8px 13px;border-radius:30px}
+.hero{text-align:center;padding:34px 20px 30px}.eyebrow{display:inline-block;background:#e4f2f8;color:#6793aa;border-radius:30px;padding:8px 14px;font-size:12px;font-weight:700;letter-spacing:.5px}
+h1{font-size:clamp(29px,5vw,43px);line-height:1.25;margin:18px 0 12px;letter-spacing:-1.5px}.hero p{color:var(--muted);line-height:1.8;margin:0 auto;max-width:540px;font-size:15px}
+.steps{display:flex;justify-content:center;gap:8px;margin:24px 0 0;flex-wrap:wrap}.step{font-size:12px;color:#8291a2;background:#ffffffb8;border:1px solid #e9eef3;padding:8px 12px;border-radius:30px}.step.active{background:#dff1fa;color:#477d98;border-color:#cce7f3}
+.panel{background:#ffffffd9;border:1px solid #edf1f5;border-radius:25px;padding:clamp(22px,4vw,34px);box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+.screen{display:none}.screen.active{display:block}.section-top{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:24px}.section-top h2{margin:0;font-size:23px;letter-spacing:-.7px}.section-top p{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.6}.counter{white-space:nowrap;background:var(--lav);color:#8271aa;border-radius:20px;padding:8px 12px;font-size:12px;font-weight:700}
+.progress{height:7px;background:#edf1f5;border-radius:20px;overflow:hidden;margin:0 0 26px}.bar{height:100%;width:0;background:linear-gradient(90deg,#a9d8eb,#c9b9ec);border-radius:20px;transition:width .25s}
+.question{padding:19px 0;border-bottom:1px solid var(--line)}.question:last-child{border-bottom:0}.qtitle{font-size:15px;font-weight:750;line-height:1.6;margin:0 0 13px}.options{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.opt{border:1px solid #e5ebf1;background:#fbfcfe;color:#64758a;border-radius:13px;padding:12px 5px;font-size:12px;line-height:1.45;min-height:58px;transition:.15s}.opt:hover{border-color:#b9d9e9;background:#f2f9fc}.opt.selected{background:#e4f3fa;border-color:#9dcde2;color:#416f89;font-weight:800;box-shadow:inset 0 0 0 1px #b7ddec}
+.scale-note{display:flex;justify-content:space-between;color:#9aa6b4;font-size:11px;margin-top:8px;padding:0 3px}
+.btnrow{display:flex;justify-content:space-between;gap:10px;margin-top:27px}.btn{border:0;border-radius:15px;padding:14px 22px;font-weight:800;font-size:14px}.primary{background:#8fc4dc;color:#fff;box-shadow:0 7px 16px #8fc4dc44}.primary:hover{background:#78b4d0}.secondary{background:#f0f3f7;color:#78879a}.primary:disabled{opacity:.45;cursor:not-allowed}
+.notice{background:#fff8e9;border:1px solid #f4ebd7;color:#8b8067;padding:14px 16px;border-radius:15px;font-size:12px;line-height:1.7;margin-top:20px}
+.intro-illustration{width:112px;height:112px;margin:0 auto 18px;border-radius:35px;background:linear-gradient(145deg,#e1f3fa,#eee8fb);display:grid;place-items:center;font-size:48px}
+.choice-card{background:#f8fbfd;border:1px solid #e8eff4;padding:17px;border-radius:17px;margin:12px 0}.choice-card strong{display:block;font-size:14px;margin-bottom:10px}.choice-row{display:flex;gap:8px;flex-wrap:wrap}.pill{border:1px solid #e3eaf0;background:white;color:#718096;border-radius:30px;padding:9px 13px;font-size:12px}.pill.selected{background:#e5f3fa;border-color:#a9d4e6;color:#477d98;font-weight:800}
+.result-head{text-align:center;padding:10px 0 22px}.result-icon{width:82px;height:82px;margin:0 auto 15px;border-radius:28px;background:linear-gradient(145deg,#e1f3fa,#eee8fb);display:grid;place-items:center;font-size:38px}.result-head h2{font-size:27px;margin:0 0 8px}.result-head p{color:var(--muted);line-height:1.7;margin:0;font-size:14px}
+.scorebox{background:linear-gradient(120deg,#eff8fc,#f5f1fc);border-radius:20px;padding:20px;margin:18px 0}.scoreline{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:12px}.scoreline b{font-size:19px;color:#5c91ab}.track{height:12px;background:#fff;border-radius:20px;overflow:hidden}.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#9ed2e5,#c5b7e9)}
+.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.metric{background:#fbfcfe;border:1px solid #edf1f5;border-radius:17px;padding:16px}.metric span{font-size:11px;color:#8996a6}.metric strong{display:block;font-size:21px;margin:7px 0 3px}.metric small{color:#7e8c9d;font-size:11px}
+.result-copy{font-size:14px;line-height:1.8;color:#64758a;margin:20px 0 0}.footer{text-align:center;color:#a0aab7;font-size:11px;margin-top:23px;line-height:1.7}
+@media(max-width:560px){.wrap{padding:18px 13px 45px}.hero{padding:20px 8px 24px}.panel{border-radius:21px;padding:20px 16px}.options{grid-template-columns:repeat(2,1fr)}.opt:last-child{grid-column:span 2}.section-top{align-items:flex-start}.section-top h2{font-size:20px}.metric-grid{grid-template-columns:1fr 1fr}.btn{padding:13px 16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="brand">STEP ON</div><div class="tag">MOVE · FEEL · GROW</div></header>
+<section class="hero">
+ <div class="eyebrow">MY MOVEMENT CHECK</div>
+ <h1>나의 움직임,<br>얼마나 달라졌을까?</h1>
+ <p>STEP ON 건강 계단 체험 전후의 생활 습관과 몸의 변화를 살펴봐요.<br>정답은 없으니 평소 나의 모습에 솔직하게 답해 주세요.</p>
+ <div class="steps"><span class="step active" id="s1">01 체험 전</span><span class="step" id="s2">02 건강 계단 체험</span><span class="step" id="s3">03 체험 후</span><span class="step" id="s4">04 결과</span></div>
+</section>
+<main class="panel">
+<section class="screen active" id="intro">
+ <div class="intro-illustration">🌿</div>
+ <div class="section-top"><div><h2>가볍게 시작해 볼까요?</h2><p>체험 전과 후에 같은 질문에 답하고, 달라진 점을 비교해 볼 거예요.</p></div></div>
+ <div class="choice-card"><strong>진단은 이렇게 진행돼요</strong><div style="font-size:13px;color:#718096;line-height:1.9">① 평소 나의 움직임 습관 진단<br>② STEP ON 건강 계단 체험<br>③ 체험 후 다시 진단하고 변화 확인</div></div>
+ <div class="notice">이 테스트는 본인의 생활 습관과 체험 후 느낌을 돌아보기 위한 자가진단입니다. 의학적 검사나 실제 체력 측정을 대신하지 않아요.</div>
+ <div class="btnrow" style="justify-content:flex-end"><button class="btn primary" onclick="show('before')">진단 시작하기 →</button></div>
+</section>
+<section class="screen" id="before">
+ <div class="section-top"><div><h2>체험 전 나의 모습</h2><p>건강 계단을 체험하기 전, 평소 생각과 이용 의향을 기준으로 답해 주세요.</p></div><span class="counter">BEFORE</span></div>
+ <div class="progress"><div class="bar" id="bar1"></div></div>
+ <div id="beforeQs"></div>
+ <div class="btnrow"><button class="btn secondary" onclick="show('intro')">이전</button><button class="btn primary" id="beforeNext" disabled onclick="show('experience')">다음 단계 →</button></div>
+</section>
+<section class="screen" id="experience">
+ <div class="result-head"><div class="result-icon">👟</div><h2>이제 건강 계단을 체험해요!</h2><p>STEP ON 건강 계단을 평소 이동하듯 이용해 보세요.<br>체험을 마친 뒤 다음 단계로 넘어가면 돼요.</p></div>
+ <div class="choice-card"><strong>체험할 때 기억해 주세요</strong><div style="font-size:13px;color:#718096;line-height:1.9">· 무리하지 않고 자신의 속도에 맞춰 이용하기<br>· 체험 직후 몸의 느낌을 잠깐 살펴보기<br>· 평소 계단을 이용할 때와 어떤 점이 다른지 생각하기</div></div>
+ <div class="notice">체험 시간이나 계단 이용 횟수는 학교에서 정한 안전 수칙을 따라 주세요.</div>
+ <div class="btnrow"><button class="btn secondary" onclick="show('before')">이전</button><button class="btn primary" onclick="show('after')">체험 완료 · 다음 →</button></div>
+</section>
+<section class="screen" id="after">
+ <div class="section-top"><div><h2>체험 후 나의 모습</h2><p>체험을 마친 지금, 계단 이용과 건강한 움직임에 대한 생각을 기준으로 답해 주세요.</p></div><span class="counter">AFTER</span></div>
+ <div class="progress"><div class="bar" id="bar2"></div></div>
+ <div id="afterQs"></div>
+ <div class="choice-card"><strong>체험 직후 몸에서 느껴진 변화는 무엇인가요?</strong><div class="choice-row" id="feelings"></div></div>
+ <div class="choice-card"><strong>앞으로 계단을 더 자주 이용해 볼 생각이 있나요?</strong><div class="choice-row" id="intention"></div></div>
+ <div class="btnrow"><button class="btn secondary" onclick="show('experience')">이전</button><button class="btn primary" id="resultBtn" disabled onclick="makeResult()">나의 변화 확인하기 →</button></div>
+</section>
+<section class="screen" id="result">
+ <div class="result-head"><div class="result-icon" id="resultIcon">✨</div><h2 id="resultTitle">나의 움직임 변화</h2><p id="resultDesc"></p></div>
+ <div class="scorebox"><div class="scoreline"><span>계단 이용·건강한 움직임 인식 변화</span><b id="scoreChange">+0점</b></div><div class="track"><div class="fill" id="scoreFill" style="width:0%"></div></div><div style="display:flex;justify-content:space-between;color:#98a5b3;font-size:11px;margin-top:8px"><span>체험 전</span><span>체험 후</span></div></div>
+ <div class="metric-grid" id="metrics"></div>
+ <p class="result-copy" id="resultCopy"></p>
+ <div class="notice">결과는 본인이 선택한 응답을 바탕으로 계산한 자기보고식 비교예요. 한 번의 체험만으로 장기적인 체력이나 건강 개선을 확정할 수는 없어요.</div>
+ <div class="btnrow"><button class="btn secondary" onclick="location.reload()">처음부터 다시 하기</button><button class="btn primary" onclick="window.print()">결과 인쇄하기</button></div>
+</section>
+</main>
+<div class="footer">STEP ON · 작은 움직임이 만드는 건강한 변화<br>본 테스트는 교육·체험 목적의 자가진단입니다.</div>
+</div>
+<script>
+const beforeQs=[
+"평소 가까운 층으로 이동할 때 계단을 이용할 의향이 있나요?",
+"엘리베이터와 계단 중 하나를 선택할 수 있다면 계단을 선택할 것 같나요?",
+"계단을 이용하는 것이 일상 속 신체 활동량을 늘리는 데 도움이 된다고 생각하나요?",
+"일부러 운동할 시간을 내지 않더라도 이동할 때 걷는 것만으로 건강에 도움이 된다고 생각하나요?",
+"앞으로 일상에서 걷거나 계단을 이용하는 습관을 늘리고 싶나요?"
+];
+const afterQs=[
+"앞으로 가까운 층으로 이동할 때 계단을 더 많이 이용할 생각이 있나요?",
+"엘리베이터와 계단 중 하나를 선택할 수 있다면 이제 계단을 더 자주 선택할 것 같나요?",
+"건강 계단 체험을 통해 계단 이용이 일상 속 신체 활동량을 늘리는 데 도움이 된다고 느꼈나요?",
+"이동할 때 걷거나 계단을 이용하는 것도 건강을 위한 좋은 활동이라고 생각하게 되었나요?",
+"이번 체험을 계기로 평소 걷거나 계단을 이용하는 습관을 늘리고 싶어졌나요?"
+];
+const labels=["전혀 그렇지 않다","그렇지 않은 편이다","보통이다","그런 편이다","매우 그렇다"];
+let before=[],after=[],feel="",intent="";
+function renderQs(target,arr,prefix){
+ const root=document.getElementById(target);root.innerHTML="";
+ const questionSet = prefix==='before' ? beforeQs : afterQs;
+ questionSet.forEach((q,i)=>{
+  const div=document.createElement('div');div.className='question';
+  div.innerHTML=`<p class="qtitle">${i+1}. ${q}</p><div class="options">${labels.map((l,j)=>`<button type="button" class="opt ${arr[i]===j+1?'selected':''}" data-q="${i}" data-v="${j+1}">${l}</button>`).join('')}</div><div class="scale-note"><span>낮음</span><span>높음</span></div>`;
+  root.appendChild(div);
+ });
+ root.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+  const i=+b.dataset.q,v=+b.dataset.v;arr[i]=v;
+  b.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.toggle('selected',x===b));
+  const count=arr.filter(Boolean).length;document.getElementById(prefix==='before'?'bar1':'bar2').style.width=(count/5*100)+'%';
+  if(prefix==='before')document.getElementById('beforeNext').disabled=count!==5;
+  else checkAfter();
+ }));
+}
+function renderPills(id,values,which){const root=document.getElementById(id);root.innerHTML='';values.forEach(v=>{const b=document.createElement('button');b.className='pill';b.textContent=v;b.onclick=()=>{root.querySelectorAll('.pill').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');if(which==='feel')feel=v;else intent=v;checkAfter()};root.appendChild(b)})}
+function checkAfter(){document.getElementById('resultBtn').disabled=!(after.filter(Boolean).length===5&&feel&&intent)}
+function show(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');
+ const map={before:'s1',experience:'s2',after:'s3',result:'s4'};document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(map[id]).classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function makeResult(){
+ const a=before.reduce((x,y)=>x+y,0),b=after.reduce((x,y)=>x+y,0),d=b-a;
+ document.getElementById('scoreChange').textContent=(d>0?'+':'')+d+'점';
+ document.getElementById('scoreFill').style.width=(b/25*100)+'%';
+ const delta=after.map((v,i)=>v-before[i]);
+ const better=delta.filter(x=>x>0).length,same=delta.filter(x=>x===0).length;
+ let title,desc,icon,copy;
+ if(d>=5){title='활기찬 변화 발견!';desc='체험 후 생활 속 움직임에 대한 인식이 긍정적으로 달라졌어요.';icon='🌷';copy='체험 전보다 여러 항목에서 긍정적인 변화가 나타났어요. 이번 경험을 계기로 가까운 거리는 걷고, 일상에서 계단을 이용하는 습관을 조금씩 이어가 보세요.'}
+ else if(d>0){title='작은 변화의 시작';desc='체험 후 움직임 습관에 긍정적인 변화가 조금 나타났어요.';icon='🌱';copy='작은 변화도 좋은 출발점이에요. 한 번의 체험으로 모든 습관이 달라지지는 않지만, 계단 이용을 일상 속 움직임을 늘리는 계기로 삼아 보세요.'}
+ else if(d===0){title='꾸준함이 중요한 균형형';desc='체험 전후 응답에 큰 차이는 없어요. 현재의 생활 습관을 돌아보는 기회가 되었어요.';icon='☁️';copy='체험 한 번으로 평소 습관이나 인식이 바로 달라지지 않을 수 있어요. 앞으로 계단을 반복해서 이용하면서 자신의 움직임이 어떻게 달라지는지 살펴보세요.'}
+ else {title='나에게 맞는 속도 찾기';desc='체험 후 응답 점수가 낮아졌어요. 몸 상태와 활동량은 상황에 따라 달라질 수 있어요.';icon='🫧';copy='체험 직후 피로하거나 평소보다 활동이 부담스럽게 느껴질 수도 있어요. 무리하기보다 자신의 몸 상태에 맞춰 천천히 활동량을 조절하는 것이 중요해요.'}
+ document.getElementById('resultTitle').textContent=title;document.getElementById('resultDesc').textContent=desc;document.getElementById('resultIcon').textContent=icon;document.getElementById('resultCopy').textContent=copy;
+ const diffText=d>0?'상승':d<0?'하락':'변화 없음';
+ document.getElementById('metrics').innerHTML=`
+ <div class="metric"><span>체험 전 점수</span><strong>${a}/25</strong><small>체험 전 태도·이용 의향</small></div>
+ <div class="metric"><span>체험 후 점수</span><strong>${b}/25</strong><small>체험 후 태도·이용 의향</small></div>
+ <div class="metric"><span>응답이 긍정적으로 바뀐 항목</span><strong>${better}개</strong><small>총 5개 문항 중</small></div>
+ <div class="metric"><span>체험 후 계단 이용 의향</span><strong style="font-size:16px">${intent}</strong><small>본인의 응답</small></div>`;
+ show('result');
+}
+renderQs('beforeQs',before,'before');renderQs('afterQs',after,'after');
+renderPills('feelings',['몸이 따뜻해졌다','다리에 자극이 느껴졌다','숨이 조금 찼다','개운하고 활력이 생겼다','특별한 변화는 없었다'],'feel');
+renderPills('intention',['꼭 이용해 보고 싶다','기회가 되면 이용하겠다','잘 모르겠다','이용할 생각이 없다'],'intent');
+</script>
+</body></html>
